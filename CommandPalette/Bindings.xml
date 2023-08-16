@@ -1,0 +1,7 @@
+<Bindings>
+    <Binding name="OPENCOMMANDPALETTE" header="COMMANDPALETTE"
+        category="BINDING_HEADER_COMMANDPALETTE"
+        default="CTRL-SHIFT-P">
+        CommandPalette:TryShow()
+    </Binding>
+</Bindings>

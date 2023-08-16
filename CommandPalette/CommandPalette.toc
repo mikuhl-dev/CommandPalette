@@ -1,0 +1,10 @@
+## Interface: 100105
+## Title: Command Palette
+## Notes: Ctrl + Shift + P
+## Version: 1.0.0
+## SavedVariablesPerCharacter: CommandPaletteHistory
+
+localization\Localization.xml
+utils\Utils.xml
+CommandPalette.xml
+plugins\Plugins.xml
