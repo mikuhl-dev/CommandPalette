@@ -3,6 +3,7 @@
 ## Notes: Ctrl + Shift + P
 ## Version: 1.0.0
 ## SavedVariablesPerCharacter: CommandPaletteHistory
+## X-Curse-Project-ID: 903532
 
 localization\Localization.xml
 utils\Utils.xml
