@@ -1,7 +1,7 @@
 ## Interface: 100105
 ## Title: Command Palette
 ## Notes: Ctrl + Shift + P
-## Version: 1.0.0
+## Version: @project-version@
 ## SavedVariablesPerCharacter: CommandPaletteHistory
 ## X-Curse-Project-ID: 903532
 
