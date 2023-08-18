@@ -13,7 +13,6 @@ if GetLocale() == "esMX" then
     L["Clear World Marker: %s"] = "Limpiar marcador mundial: %s"
     L["Destroy Totem: %s"] = "Destruir tótem: %s"
     L["Dismiss Battle Pet"] = "Despedir mascota de combate"
-    L["Dismount"] = "Desmontar"
     L["Equip Equipment Set: %s"] = "Equipar conjunto de equipo: %s"
     L["Focus: %s"] = "Enfocar: %s"
     L["Follow: %s"] = "Seguir: %s"

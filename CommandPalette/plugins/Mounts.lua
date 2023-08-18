@@ -21,17 +21,4 @@ EventRegistry:RegisterCallback("CommandPalette.UpdateActions", function()
             })
         end
     end
-
-    do -- Dismount
-        local title = L["Dismount"]
-        if CommandPalette:MatchesSearch(title) then
-            CommandPalette:AddAction({
-                title = title,
-                action = {
-                    type = "macro",
-                    macrotext = [[/dismount]],
-                }
-            })
-        end
-    end
 end)
