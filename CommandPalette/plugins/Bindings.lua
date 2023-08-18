@@ -73,7 +73,7 @@ EventRegistry:RegisterCallback("CommandPalette.UpdateActions", function()
             end
         else
             local bindingText = StripHyperlinks(bindingName and _G["BINDING_NAME_" .. bindingName] or bindingName)
-            local categoryText = StripHyperlinks(categoryName and _G[categoryName] or categoryName)
+            local categoryText = StripHyperlinks(categoryName and _G[categoryName] or categoryName or OTHER)
 
             if headerText ~= nil and lastCategoryName ~= categoryName then
                 headerText = nil
