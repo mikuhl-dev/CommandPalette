@@ -100,8 +100,8 @@ _CommandPalette = {
 
                 local button = CommandPaletteSecureActionButton
                 button.historyKey = data.title
-                button:ClearAttributes()
-                button:ClearBinding()
+                button:SetAttributes(nil)
+                button:SetBinding(nil, nil)
                 if data.action ~= nil then
                     button:SetAttributes(data.action)
                     SetOverrideBindingClick(self, true, "ENTER", button:GetName(), "LeftButton")
@@ -151,7 +151,7 @@ _CommandPaletteSearchBox = {
             elseif key == "ENTER" then
                 local button = CommandPaletteSecureActionButton
                 if button.bindingKey == key then
-                    ExecuteFrameScript(button, "OnClick")
+                    button:UpdateHistory()
                 end
             end
             self:SetPropagateKeyboardInput(key == "ENTER")
@@ -198,11 +198,8 @@ _CommandPaletteButton = {
             self:SetTitle(data.title)
             self:SetIcon(data.icon)
             self:SetQuality(data.quality)
-            self:SetAction(data.action)
-
-            if data.binding then
-                self:SetBinding("BUTTON1", data.binding)
-            end
+            self:SetAttributes(data.action)
+            self:SetBinding("BUTTON1", data.binding)
 
             self:UpdateCooldown()
             self:UpdateHighlight()
@@ -237,13 +234,6 @@ _CommandPaletteButton = {
             else
                 normalTexture:SetVertexColor(1, 1, 1)
                 border:Hide()
-            end
-        end,
-
-        SetAction = function(self, action)
-            self:ClearAttributes()
-            if action ~= nil then
-                self:SetAttributes(action)
             end
         end,
 
@@ -288,20 +278,13 @@ local buttonKeys = {
 
 _CommandPaletteSecureActionButton = {
     scripts = {
-        OnAttributeChanged = function(self, key, value)
-            self.attributes = self.attributes or {}
-            self.attributes[key] = value
-        end,
 
         OnEnter = function(self)
             self:UpdateBinding(true)
         end,
 
         OnClick = function(self)
-            CommandPaletteHistory[self.historyKey] = time()
-            C_Timer.After(0, function()
-                CommandPalette:TryHide()
-            end)
+            self:UpdateHistory()
         end,
 
         OnLeave = function(self)
@@ -319,21 +302,32 @@ _CommandPaletteSecureActionButton = {
             self.historyKey = key
         end,
 
+        UpdateHistory = function(self)
+            CommandPaletteHistory[self.historyKey] = time()
+            C_Timer.After(0, function()
+                CommandPalette:TryHide()
+            end)
+        end,
+
         SetAttributes = function(self, attributes)
-            for key, value in pairs(attributes) do
+            for key in pairs(self.attributes or {}) do
+                self:SetAttribute(key, nil)
+            end
+            self.attributes = attributes
+            for key, value in pairs(self.attributes or {}) do
                 self:SetAttribute(key, value)
             end
         end,
 
-        ClearAttributes = function(self)
-            for key in pairs(self.attributes or {}) do
-                self:SetAttribute(key, nil)
-            end
-        end,
-
         SetBinding = function(self, key, binding)
-            self.binding = binding
-            self.bindingKey = key
+            if key == nil or binding == nil then
+                self.binding = nil
+                self.bindingKey = nil
+            else
+                self.binding = binding
+                self.bindingKey = key
+            end
+            self:UpdateBinding(MouseIsOver(self))
         end,
 
         UpdateBinding = function(self, enable)
@@ -352,13 +346,6 @@ _CommandPaletteSecureActionButton = {
                 end
             end
         end,
-
-        ClearBinding = function(self)
-            self.binding = nil
-            self.bindingKey = nil
-            ClearOverrideBindings(self)
-            self:SetPassThroughButtons()
-        end,
     },
 
     events = {
@@ -368,7 +355,7 @@ _CommandPaletteSecureActionButton = {
                 if bindingKey ~= nil then
                     local buttonKey = buttonKeys[bindingKey]
                     if buttonKey ~= nil and buttonKey == button then
-                        ExecuteFrameScript(self, "OnClick")
+                        self:UpdateHistory()
                     end
                 end
             end
