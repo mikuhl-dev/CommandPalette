@@ -2,9 +2,10 @@
 
 # `>` Command Palette
 
-[![GitHub Repo Stars Badge](https://img.shields.io/github/stars/MichaelPriebe/CommandPalette)](https://github.com/MichaelPriebe/CommandPalette)
-[![Donate Badge](https://img.shields.io/badge/donate-paypal-blue)](https://www.paypal.com/cgi-bin/webscr?return=https://legacy.curseforge.com/projects/903532&cn=Add+special+instructions+to+the+addon+author()&business=paypal%40mikuhl.me&bn=PP-DonationsBF:btn_donateCC_LG.gif:NonHosted&cancel_return=https://legacy.curseforge.com/projects/903532&lc=US&item_name=Command+Palette+(from+curseforge.com)&cmd=_donations&rm=1&no_shipping=1&currency_code=USD)
-
+[![GitHub Repo Stars Badge](https://img.shields.io/github/stars/MichaelPriebe/CommandPalette?logo=github&color=yellow)](https://github.com/MichaelPriebe/CommandPalette)
+[![Donate PayPal Badge](https://img.shields.io/badge/donate-paypal-blue?logo=paypal)](https://www.paypal.com/donate/?business=7CX6PEVVWC97N&no_recurring=0&item_name=Creating+Command+Palette&currency_code=USD)
+[![Download CurseForge Badge](https://img.shields.io/badge/download-curseforge-orange?logo=curseforge)](https://curseforge.com/wow/addons/command-palette)
+[![Download GitHub Badge](https://img.shields.io/badge/download-github-lightgray?logo=github)](https://github.com/MichaelPriebe/CommandPalette/releases)
 </div>
 
 Command Palette gives you everything at your fingertips with a single search. Use `CTRL+SHIFT+P` to bring up the Command Palette and search for what you are looking for. Use `UP` + `DOWN` arrow keys to adjust your selection, and click `ENTER` to execute, or simply click on the option with your mouse.
