@@ -29,6 +29,11 @@ _CommandPalette = {
 
         OnShow = function(self)
             self:SetSearch("")
+            -- Needed because EditBox has a bug with some keybinds.
+            -- Funnily enough, Blizzard does this for the Chat EditBox.
+            C_Timer.After(0, function()
+                self:SetSearch("")
+            end)
         end,
 
         OnHide = function(self)
