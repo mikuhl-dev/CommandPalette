@@ -3,24 +3,24 @@ local _, addon = ...
 local L = addon.L
 
 EventRegistry:RegisterCallback("CommandPalette.UpdateActions", function()
-    for tabIndex = 1, GetNumSpellTabs() do
-        local spellTabInfo = { GetSpellTabInfo(tabIndex) }
-        local offset = spellTabInfo[3]
-        local numSpells = spellTabInfo[4]
-        for spellIndex = offset + 1, offset + numSpells do
-            local spellInfo = { GetSpellInfo(spellIndex, BOOKTYPE_SPELL) }
-            local name = spellInfo[1]
-            local icon = spellInfo[3]
-            local spellID = spellInfo[7]
-            if name ~= nil then
-                local title = string.format(L["Cast Spell: %s"], name)
-                if IsSpellKnown(spellID) and
-                    IsUsableSpell(spellID) and
-                    not IsPassiveSpell(spellID) and
+    for _, bookType in pairs({ BOOKTYPE_SPELL, BOOKTYPE_PET }) do
+        local isPet = bookType == BOOKTYPE_PET
+        local i = 1
+        while true do
+            local spellBookItemName = { GetSpellBookItemName(i, bookType) }
+            local spellName = spellBookItemName[1]
+            local spellID = spellBookItemName[3]
+            if spellName == nil then
+                break
+            end
+            if spellID ~= nil then
+                local title = string.format(L["Cast Spell: %s"], spellName)
+                if IsSpellKnown(spellID, isPet) and
+                    not IsPassiveSpell(i, bookType) and
                     CommandPalette:MatchesSearch(title) then
                     CommandPalette:AddAction({
                         title = title,
-                        icon = icon,
+                        icon = GetSpellBookItemTexture(i, bookType),
                         cooldown = GenerateClosure(GetSpellCooldown, spellID),
                         action = {
                             type = "spell",
@@ -29,6 +29,7 @@ EventRegistry:RegisterCallback("CommandPalette.UpdateActions", function()
                     })
                 end
             end
+            i = i + 1
         end
     end
 end)
