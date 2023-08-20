@@ -11,6 +11,7 @@
     <Include file="Miscellaneous.lua" />
     <Include file="Mounts.lua" />
     <Include file="PetActions.lua" />
+    <Include file="Professions.lua" />
     <Include file="PVP.lua" />
     <Include file="Spells.lua" />
     <Include file="Titles.lua" />
