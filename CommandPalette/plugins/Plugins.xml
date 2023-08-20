@@ -10,7 +10,7 @@
     <Include file="Macros.lua" />
     <Include file="Miscellaneous.lua" />
     <Include file="Mounts.lua" />
-    <Include file="Pets.lua" />
+    <Include file="PetActions.lua" />
     <Include file="PVP.lua" />
     <Include file="Spells.lua" />
     <Include file="Titles.lua" />
