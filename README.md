@@ -59,9 +59,16 @@ If your action is not addon specific, consider creating a [Pull Request](https:/
 
 ### Blizzard ❄️
 - [ ] Create more Bindings for game functions.
-- [ ] Create a `binding` type for `SecureActionButtonTemplate`
-- [ ] Create `nearbyX` unit types. Nameplates are too limiting.
-- [ ] Bring back `[target=Name]` or `[@Name]` macro conditionals.
-- [ ] Make functions that take UnitID/UnitToken also take a name.
+  - Also fix the disappearance of keybind headers.
+- [ ] Create a `binding` type for `SecureActionButtonTemplate`.
+  - Player created bindings should obviously not run secure code, but Blizzard bindings should.
+- [ ] Allow `spellIndex` and `bookType` for `spell` action for `SecureActionButtonTemplate`.
+  - Mainly for pet actions that arent spells. So they arent required to be on your pets action bar.
+  - Would use `CastSpell` instead of `CastSpellByID` and `CastSpellByName`
+- [ ] Create `nearbyX` unit types.
+  - Nameplates dont work with NPC's.
+  - Nameplates dont work with > 40 units.
+- [ ] Bring back `[target=Name]` or `[@Name]` macro conditionals, and make functions that take `UnitID`/`UnitToken` also take a name.
+  - You can already work around this using a macro. But macro's will change the users target and target history.
 
 ---
