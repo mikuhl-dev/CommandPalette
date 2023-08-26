@@ -1,6 +1,6 @@
-local _, addon = ...
+local _, addon = ...;
 
-local L = addon.L
+local L = addon.L;
 
 EventRegistry:RegisterCallback("CommandPalette.UpdateActions", function()
     -- Duel
@@ -11,7 +11,7 @@ EventRegistry:RegisterCallback("CommandPalette.UpdateActions", function()
         HasFullControl() and
         not UnitIsDeadOrGhost("player") and
         not UnitIsDeadOrGhost("target") then
-        local title = L["Request Duel"]
+        local title = L["Request Duel"];
         if CommandPalette:MatchesSearch(title) then
             CommandPalette:AddAction({
                 title = title,
@@ -19,12 +19,12 @@ EventRegistry:RegisterCallback("CommandPalette.UpdateActions", function()
                     type = "macro",
                     macrotext = [[/duel]]
                 }
-            })
-        end
-    end
+            });
+        end;
+    end;
 
     -- PVP
-    local title = L["Toggle Player Vs Player"]
+    local title = L["Toggle Player Vs Player"];
     if CommandPalette:MatchesSearch(title) then
         CommandPalette:AddAction({
             title = title,
@@ -32,6 +32,6 @@ EventRegistry:RegisterCallback("CommandPalette.UpdateActions", function()
                 type = "macro",
                 macrotext = [[/pvp]]
             }
-        })
-    end
-end)
+        });
+    end;
+end);

@@ -1,14 +1,14 @@
-local _, addon = ...
+local _, addon = ...;
 
-local L = addon.L
+local L = addon.L;
 
 EventRegistry:RegisterCallback("CommandPalette.UpdateActions", function()
     for i = 1, 8 do
-        local name = _G["RAID_TARGET_" .. i]
-        local icon = 137000 + i
+        local name = _G["RAID_TARGET_" .. i];
+        local icon = 137000 + i;
 
         do -- Set
-            local title = string.format(L["Set World Marker: %s"], name)
+            local title = string.format(L["Set World Marker: %s"], name);
             if CommandPalette:MatchesSearch(title) then
                 CommandPalette:AddAction({
                     title = title,
@@ -18,12 +18,12 @@ EventRegistry:RegisterCallback("CommandPalette.UpdateActions", function()
                         action = "set",
                         marker = i,
                     }
-                })
-            end
-        end
+                });
+            end;
+        end;
 
         do -- Clear
-            local title = string.format(L["Clear World Marker: %s"], name)
+            local title = string.format(L["Clear World Marker: %s"], name);
             if CommandPalette:MatchesSearch(title) then
                 CommandPalette:AddAction({
                     title = title,
@@ -33,8 +33,8 @@ EventRegistry:RegisterCallback("CommandPalette.UpdateActions", function()
                         action = "clear",
                         marker = i,
                     }
-                })
-            end
-        end
-    end
-end)
+                });
+            end;
+        end;
+    end;
+end);

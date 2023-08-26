@@ -1,7 +1,7 @@
-local _, addon = ...
+local _, addon = ...;
 
 local function index(_, key)
-    return key
-end
+    return key;
+end;
 
-addon.L = setmetatable({}, { __index = index })
+addon.L = setmetatable({}, { __index = index });

@@ -1,9 +1,9 @@
-local _, addon = ...
+local _, addon = ...;
 
-local L = addon.L
+local L = addon.L;
 
 if GetLocale() == "esMX" then
-    L["Command Palette"] = "Paleta de Comandos"
+    L["Command Palette"] = "Paleta de Comandos";
 
     -- AI GENERATED, Are they good?
     --[[
@@ -37,4 +37,4 @@ if GetLocale() == "esMX" then
     L["Use Macro: %s"] = "Usar macro: %s"
     L["Use Toy: %s"] = "Usar juguete: %s"
     ]]
-end
+end;

@@ -1,10 +1,10 @@
-local _, addon = ...
+local _, addon = ...;
 
-local L = addon.L
+local L = addon.L;
 
 EventRegistry:RegisterCallback("CommandPalette.UpdateActions", function()
     if UnitIsGroupLeader("player") or UnitIsGroupAssistant("player") then
-        local title = L["Ready Check"]
+        local title = L["Ready Check"];
         if CommandPalette:MatchesSearch(title) then
             CommandPalette:AddAction({
                 title = title,
@@ -12,7 +12,7 @@ EventRegistry:RegisterCallback("CommandPalette.UpdateActions", function()
                     type = "macro",
                     macrotext = [[/readycheck]],
                 }
-            })
-        end
-    end
-end)
+            });
+        end;
+    end;
+end);

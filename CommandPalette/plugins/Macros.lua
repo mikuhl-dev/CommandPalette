@@ -1,14 +1,14 @@
-local _, addon = ...
+local _, addon = ...;
 
-local L = addon.L
+local L = addon.L;
 
 EventRegistry:RegisterCallback("CommandPalette.UpdateActions", function()
     for macroIndex = 0, GetNumMacros() do
-        local macroInfo = { GetMacroInfo(macroIndex) }
-        local name = macroInfo[1]
-        local icon = macroInfo[2]
+        local macroInfo = { GetMacroInfo(macroIndex) };
+        local name = macroInfo[1];
+        local icon = macroInfo[2];
         if name ~= nil then
-            local title = string.format(L["Use Macro: %s"], name)
+            local title = string.format(L["Use Macro: %s"], name);
             if CommandPalette:MatchesSearch(title) then
                 CommandPalette:AddAction({
                     title = title,
@@ -17,8 +17,8 @@ EventRegistry:RegisterCallback("CommandPalette.UpdateActions", function()
                         type = "macro",
                         macro = macroIndex
                     }
-                })
-            end
-        end
-    end
-end)
+                });
+            end;
+        end;
+    end;
+end);
