@@ -10,8 +10,13 @@ EventRegistry:RegisterCallback("CommandPalette.UpdateActions", function()
             if itemID then
                 local itemName = C_Item.GetItemNameByID(itemID)
                 if itemName ~= nil then
-                    local title = string.format(L["Use Bag Item: %s"], itemName)
-                    if (IsUsableItem(itemID) or IsEquippableItem(itemID)) and CommandPalette:MatchesSearch(title) then
+                    local title = nil
+                    if IsUsableItem(itemID) or GetItemSpell(itemID) ~= nil then
+                        title = string.format(L["Use Bag Item: %s"], itemName)
+                    elseif IsEquippableItem(itemID) then
+                        title = string.format(L["Equip Bag Item: %s"], itemName)
+                    end
+                    if title ~= nil and CommandPalette:MatchesSearch(title) then
                         CommandPalette:AddAction({
                             title = title,
                             icon = C_Item.GetItemIconByID(itemID),
