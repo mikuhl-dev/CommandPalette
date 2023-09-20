@@ -6,6 +6,7 @@
 [![Donate PayPal Badge](https://img.shields.io/badge/donate-paypal-blue?logo=paypal)](https://www.paypal.com/donate/?business=7CX6PEVVWC97N&no_recurring=0&item_name=Creating+Command+Palette&currency_code=USD)
 [![Download CurseForge Badge](https://img.shields.io/badge/download-curseforge-orange?logo=curseforge)](https://curseforge.com/wow/addons/command-palette)
 [![Download GitHub Badge](https://img.shields.io/badge/download-github-lightgray?logo=github)](https://github.com/MichaelPriebe/CommandPalette/releases)
+
 </div>
 
 Command Palette gives you everything at your fingertips with a single search. Use `CTRL+SHIFT+P` to bring up the Command Palette and search for what you are looking for. Use `UP` + `DOWN` arrow keys to adjust your selection, and click `ENTER` to execute, or simply click on the option with your mouse.
@@ -15,6 +16,7 @@ Command Palette gives you everything at your fingertips with a single search. Us
 ## ❓ What Can It Do?
 
 Command Palette can do almost everything, for example:
+
 - Cast Spells
 - Use Items
 - Use Toys
@@ -51,13 +53,14 @@ Binding icons are automatically set to your addons `IconTexture` if your addon n
 BINDING_ICON_RAIDTARGET1 = 137001
 ```
 
-If there is a dynamic action that cannot be put into bindings, you can respond to the `CommandPalette.UpdateActions` event, and add your action. Example: [Titles.lua](CommandPalette/plugins/Titles.lua)
+If there is a dynamic action that cannot be put into bindings, you can respond to the `CommandPalette.UpdateActions` event, and add your action. Example: [Titles.lua](CommandPalette/modules/Titles.lua)
 
-If your action is not addon specific, consider creating a [Pull Request](https://github.com/MichaelPriebe/CommandPalette/pulls) with a new [plugin](CommandPalette/plugins) instead of creating a new addon.
+If your action is not addon specific, consider creating a [Pull Request](https://github.com/MichaelPriebe/CommandPalette/pulls) with a new [module](CommandPalette/modules) instead of creating a new addon.
 
 ---
 
 ### Blizzard ❄️
+
 - [ ] Create more Bindings for game functions.
   - Also fix the disappearance of keybind headers.
 - [ ] Create a `binding` type for `SecureActionButtonTemplate`.

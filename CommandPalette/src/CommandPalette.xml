@@ -1,14 +1,16 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
     <Include file="CommandPalette.lua" />
+    <Include file="CommandPaletteFrame.lua" />
+    <Include file="CommandPaletteButton.lua" />
 
-    <Button name="CommandPaletteButtonTemplate" inherits="SecureActionButtonTemplate" virtual="true"
-        registerForClicks="LeftButtonDown, LeftButtonUp">
+    <Button name="CommandPaletteButtonTemplate"
+        inherits="SecureActionButtonTemplate" virtual="true"
+        registerForClicks="LeftButtonUp">
         <Size y="45" />
         <Frames>
-            <Frame inherits="CommandPaletteMixin" mixin="_CommandPaletteButton" />
-            <Frame inherits="CommandPaletteMixin" mixin="_CommandPaletteSecureActionButton" />
-            <CheckButton parentKey="IconButton" inherits="ActionButtonTemplate">
+            <CheckButton parentKey="IconButton" inherits="ActionButtonTemplate"
+                registerForClicks="LeftButtonUp" registerForDrag="LeftButton">
                 <Anchors>
                     <Anchor point="LEFT" />
                 </Anchors>
@@ -25,25 +27,24 @@
         <NormalFont style="GameFontNormal" />
         <HighlightFont style="GameFontHighlight" />
         <DisabledFont style="GameFontDisable" />
+        <Scripts>
+            <OnLoad function="MixinCommandPaletteButton" inherit="prepend" />
+        </Scripts>
     </Button>
 
-    <Frame name="CommandPalette" parent="UIParent" inherits="PortraitFrameFlatTemplate"
+    <Frame name="CommandPaletteFrame" parent="UIParent" inherits="PortraitFrameFlatTemplate"
         hidden="true" toplevel="true">
         <Size x="500" y="400" />
         <Anchors>
             <Anchor point="TOP" y="-200" />
         </Anchors>
         <Frames>
-            <Frame inherits="CommandPaletteMixin" mixin="_CommandPalette" />
             <EditBox parentKey="SearchBox" inherits="SearchBoxTemplate" autoFocus="true">
                 <Size y="20" />
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeKey="$parent.Bg" x="13" y="-8" />
                     <Anchor point="RIGHT" relativeKey="$parent.Bg" x="-8" />
                 </Anchors>
-                <Frames>
-                    <Frame inherits="CommandPaletteMixin" mixin="_CommandPaletteSearchBox" />
-                </Frames>
             </EditBox>
             <EventFrame parentKey="ScrollBar" inherits="MinimalScrollBar">
                 <Anchors>
@@ -52,22 +53,19 @@
                 </Anchors>
             </EventFrame>
             <ScrollFrame parentKey="ScrollBox" inherits="WowScrollBoxList">
-                <Frames>
-                    <Frame inherits="CommandPaletteMixin" mixin="_CommandPaletteScrollBox" />
-                </Frames>
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeKey="$parent.Bg" y="-28" />
                     <Anchor point="RIGHT" relativeKey="$parent.ScrollBar" relativePoint="LEFT" />
                     <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Bg" />
                 </Anchors>
             </ScrollFrame>
+            <Button name="CommandPaletteSecureActionButton" inherits="CommandPaletteButtonTemplate"
+                hidden="true">
+            </Button>
         </Frames>
+        <Scripts>
+            <OnLoad function="MixinCommandPaletteFrame" inherit="prepend" />
+        </Scripts>
     </Frame>
 
-    <Button name="CommandPaletteSecureActionButton" parent="CommandPalette"
-        inherits="SecureActionButtonTemplate" registerForClicks="LeftButtonDown, LeftButtonUp">
-        <Frames>
-            <Frame inherits="CommandPaletteMixin" mixin="_CommandPaletteSecureActionButton" />
-        </Frames>
-    </Button>
 </Ui>
