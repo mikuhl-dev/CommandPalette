@@ -53,9 +53,7 @@ Binding icons are automatically set to your addons `IconTexture` if your addon n
 BINDING_ICON_RAIDTARGET1 = 137001
 ```
 
-If there is a dynamic action that cannot be put into bindings, you can respond to the `CommandPalette.UpdateActions` event, and add your action. Example: [Titles.lua](CommandPalette/modules/Titles.lua)
-
-If your action is not addon specific, consider creating a [Pull Request](https://github.com/MichaelPriebe/CommandPalette/pulls) with a new [module](CommandPalette/modules) instead of creating a new addon.
+If there is an action that does not fit as a binding, you can register a new module to add your actions. Example: [Titles.lua](CommandPalette/modules/Titles.lua)
 
 ---
 
