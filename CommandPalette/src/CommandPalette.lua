@@ -28,12 +28,8 @@ EventUtil.ContinueOnAddOnLoaded(addonName, function()
     end;
 
     do -- Reset Usage
-        local initializer = CreateSettingsButtonInitializer(L["Action Usage"], RESET, function(...)
-            local timestamps = CommandPalette.GetActionTimestamps();
-            for key in pairs(timestamps) do
-                timestamps[key] = nil;
-            end;
-        end, L["Resets the order of actions in the Command Palette."]);
+        local initializer = CreateSettingsButtonInitializer(L["Action Usage"], RESET,
+            CommandPalette.ClearActionTimestamps, L["Resets the order of actions in the Command Palette."], true);
         Settings.RegisterInitializer(settingsCategory, initializer);
     end;
 end);
@@ -66,6 +62,11 @@ do -- Settings
         local settings = CommandPalette.GetSettings();
         settings.actionTimestamps = settings.actionTimestamps or {};
         return settings.actionTimestamps;
+    end;
+
+    function CommandPalette.ClearActionTimestamps()
+        local settings = CommandPalette.GetSettings();
+        settings.actionTimestamps = {};
     end;
 end;
 
