@@ -81,7 +81,7 @@ do -- Modules
             local setting = Settings.RegisterAddOnSetting(modulesCategory, name, variable, "boolean", true);
 
             Settings.CreateCheckBox(modulesCategory, setting, string.format(L["Enables the %s module."], name));
-            Settings.SetOnValueChangedCallback(name, function(_, _, value)
+            Settings.SetOnValueChangedCallback(variable, function(_, _, value)
                 if value then
                     CommandPalette.EnableModule(name);
                 else
