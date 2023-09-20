@@ -26,6 +26,8 @@ function MixinCommandPaletteButton(self)
         local iconButtonIcon = iconButton.icon;
 
         if type(icon) == "function" then
+            -- Fixes the lag that some functions create when scrolling through the list very fast.
+            iconButtonIcon:SetTexture(nil);
             icon(iconButtonIcon);
         else
             iconButtonIcon:SetTexture(icon or 136243);
