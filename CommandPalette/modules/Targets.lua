@@ -46,7 +46,7 @@ CommandPalette.RegisterModule(L["Targets"], {
         local names = {};
         for _, unit in pairs(units) do
             if UnitExists(unit) then
-                local name = UnitName(unit);
+                local name = GetUnitName(unit, true);
                 if name ~= nil then
                     names[name] = names[name] or {};
                     table.insert(names[name], unit);
@@ -57,36 +57,37 @@ CommandPalette.RegisterModule(L["Targets"], {
         -- Loop through names.
         for name, unitTokens in pairs(names) do
             local macrotext = string.format([[/targetexact %s]], name);
+
+            local function FindUnitToken()
+                -- Try to find unit quickly.
+                for _, unitToken in pairs(unitTokens) do
+                    if GetUnitName(unitToken, true) == name then
+                        return unitToken;
+                    end;
+                end;
+                -- Try to find unit otherwise.
+                for _, unitToken in pairs(units) do
+                    if GetUnitName(unitToken, true) == name then
+                        return unitToken;
+                    end;
+                end;
+                return nil;
+            end;
+
             table.insert(actions, {
                 name = string.format(L["Target: %s"], name),
                 icon = function(texture)
-                    -- Try to find unit quickly.
-                    for _, unitToken in pairs(unitTokens) do
-                        if UnitName(unitToken) == name then
-                            return SetPortraitTexture(texture, unitToken, true);
-                        end;
+                    local unitToken = FindUnitToken();
+                    if unitToken then
+                        SetPortraitTexture(texture, unitToken, true);
+                    else
+                        texture:SetTexture(134400);
                     end;
-                    -- Try to find unit otherwise.
-                    for _, unitToken in pairs(units) do
-                        if UnitName(unitToken) == name then
-                            return SetPortraitTexture(texture, unitToken, true);
-                        end;
-                    end;
-                    -- Cannot find unit.
-                    texture:SetTexture(134400);
                 end,
                 tooltip = function()
-                    -- Try to find unit quickly.
-                    for _, unitToken in pairs(unitTokens) do
-                        if UnitName(unitToken) == name then
-                            return GameTooltip:SetUnit(unitToken);
-                        end;
-                    end;
-                    -- Try to find unit otherwise.
-                    for _, unitToken in pairs(units) do
-                        if UnitName(unitToken) == name then
-                            return GameTooltip:SetUnit(unitToken);
-                        end;
+                    local unitToken = FindUnitToken();
+                    if unitToken then
+                        GameTooltip:SetUnit(unitToken);
                     end;
                 end,
                 pickup = function()
