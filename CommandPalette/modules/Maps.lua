@@ -10,7 +10,7 @@ local mapTypes = {
     [4] = true, -- Dungeon
 };
 
-function CreateMapActions(actions, mapInfo)
+local function CreateMapActions(actions, mapInfo)
     local mapID = mapInfo.mapID;
 
     -- This being non-nil is required so the map frame does not error.
