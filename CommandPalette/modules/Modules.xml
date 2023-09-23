@@ -8,6 +8,7 @@
     <Include file="BattlePets.lua" />
     <Include file="Bindings.lua" />
     <Include file="Commands.lua" />
+    <Include file="Currencies.lua" />
     <Include file="Emotes.lua" />
     <Include file="Encounters.lua" />
     <Include file="EquipmentSets.lua" />
