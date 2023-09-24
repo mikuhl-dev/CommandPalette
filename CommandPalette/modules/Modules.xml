@@ -18,6 +18,7 @@
     <Include file="Mounts.lua" />
     <Include file="PetActions.lua" />
     <Include file="Professions.lua" />
+    <Include file="Reputations.lua" />
     <Include file="Spells.lua" />
     <Include file="Targets.lua" />
     <Include file="Titles.lua" />
