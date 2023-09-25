@@ -1,4 +1,5 @@
-local _, addon = ...;
+---@class CommandPaletteAddon
+local addon = select(2, ...);
 
 local L = addon.L;
 
@@ -10,7 +11,7 @@ local mapTypes = {
     [4] = true, -- Dungeon
 };
 
-local function CreateMapActions(actions, mapInfo)
+local function CreateMapActions(mapInfo)
     local mapID = mapInfo.mapID;
 
     -- This being non-nil is required so the map frame does not error.
@@ -40,7 +41,7 @@ local function CreateMapActions(actions, mapInfo)
     end;
 
     -- Add map.
-    table.insert(actions, {
+    coroutine.yield({
         name = string.format(L["Open Map: %s"], name),
         icon = 137176,
         action = {
@@ -55,28 +56,10 @@ local function CreateMapActions(actions, mapInfo)
     -- Add all child maps.
     local childrenInfo = C_Map.GetMapChildrenInfo(mapID);
     for _, childInfo in pairs(childrenInfo or {}) do
-        CreateMapActions(actions, childInfo);
+        CreateMapActions(childInfo);
     end;
 end;
 
-local actions = nil;
-
-CommandPalette.RegisterModule(L["Maps"], {
-    OnEnable = function()
-        actions = nil;
-    end,
-
-    OnDisable = function()
-        actions = nil;
-    end,
-
-    GetActions = function()
-        if actions ~= nil then return actions; end;
-
-        actions = {};
-
-        CreateMapActions(actions, C_Map.GetMapInfo(946));
-
-        return actions;
-    end,
-});
+CommandPalette.RegisterModule(L["Maps"], function()
+    CreateMapActions(C_Map.GetMapInfo(946));
+end);

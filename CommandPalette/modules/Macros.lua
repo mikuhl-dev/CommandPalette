@@ -1,14 +1,7 @@
-local _, addon = ...;
+---@class CommandPaletteAddon
+local addon = select(2, ...);
 
 local L = addon.L;
-
-local frame = CreateFrame("Frame");
-
-local actions = nil;
-
-frame:SetScript("OnEvent", function()
-    actions = nil;
-end);
 
 local function CreateMacroAction(macroIndex)
     local macroInfo = { GetMacroInfo(macroIndex) };
@@ -30,32 +23,16 @@ local function CreateMacroAction(macroIndex)
     };
 end;
 
-CommandPalette.RegisterModule(L["Macros"], {
-    OnEnable = function()
-        frame:RegisterEvent("UPDATE_MACROS");
-        actions = nil;
-    end,
+CommandPalette.RegisterModule(L["Macros"], function(self)
+    local numAccountMacros, numCharacterMacros = GetNumMacros();
 
-    OnDisable = function()
-        frame:UnregisterAllEvents();
-        actions = nil;
-    end,
+    for macroIndex = 1, numAccountMacros do
+        coroutine.yield(CreateMacroAction(macroIndex));
+    end;
 
-    GetActions = function()
-        if actions ~= nil then return actions; end;
+    for macroIndex = MAX_ACCOUNT_MACROS + 1, MAX_ACCOUNT_MACROS + numCharacterMacros do
+        coroutine.yield(CreateMacroAction(macroIndex));
+    end;
 
-        actions = {};
-
-        local numAccountMacros, numCharacterMacros = GetNumMacros();
-
-        for macroIndex = 1, numAccountMacros do
-            table.insert(actions, CreateMacroAction(macroIndex));
-        end;
-
-        for macroIndex = MAX_ACCOUNT_MACROS + 1, MAX_ACCOUNT_MACROS + numCharacterMacros do
-            table.insert(actions, CreateMacroAction(macroIndex));
-        end;
-
-        return actions;
-    end,
-});
+    self.RegisterEvent("UPDATE_MACROS");
+end);

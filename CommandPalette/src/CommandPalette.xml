@@ -1,8 +1,10 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
     <Include file="CommandPalette.lua" />
-    <Include file="CommandPaletteFrame.lua" />
     <Include file="CommandPaletteButton.lua" />
+    <Include file="CommandPaletteFrame.lua" />
+    <Include file="CommandPaletteModules.lua" />
+    <Include file="CommandPaletteSettings.lua" />
 
     <Button name="CommandPaletteButtonTemplate"
         inherits="SecureActionButtonTemplate" virtual="true"
@@ -62,6 +64,21 @@
             <Button name="CommandPaletteSecureActionButton" inherits="CommandPaletteButtonTemplate"
                 hidden="true">
             </Button>
+            <Frame parentKey="Spinner" inherits="OutlineLoadingSpinnerTemplate" hidden="true">
+                <Anchors>
+                    <Anchor point="CENTER" relativeKey="$parent.ScrollBox" />
+                </Anchors>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString parentKey="Text" inherits="GameFontHighlight">
+                            <Anchors>
+                                <Anchor point="TOP" relativeKey="$parent" relativePoint="BOTTOM"
+                                    y="-8" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>
+            </Frame>
         </Frames>
         <Scripts>
             <OnLoad function="MixinCommandPaletteFrame" inherit="prepend" />

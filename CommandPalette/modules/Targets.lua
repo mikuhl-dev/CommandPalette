@@ -1,4 +1,5 @@
-local _, addon = ...;
+---@class CommandPaletteAddon
+local addon = select(2, ...);
 
 local L = addon.L;
 
@@ -38,72 +39,79 @@ for i = 1, #units do
     table.insert(units, units[i] .. "target");
 end;
 
-CommandPalette.RegisterModule(L["Targets"], {
-    GetActions = function()
-        local actions = {};
-
-        -- Gather names.
-        local names = {};
-        for _, unit in pairs(units) do
-            if UnitExists(unit) then
-                local name = GetUnitName(unit, true);
-                if name ~= nil then
-                    names[name] = names[name] or {};
-                    table.insert(names[name], unit);
-                end;
+local module = CommandPalette.RegisterModule(L["Targets"], function(self)
+    -- Gather names.
+    local names = {};
+    for _, unit in pairs(units) do
+        if UnitExists(unit) then
+            local name = GetUnitName(unit, true);
+            if name ~= nil then
+                names[name] = names[name] or {};
+                table.insert(names[name], unit);
             end;
         end;
+    end;
 
-        -- Loop through names.
-        for name, unitTokens in pairs(names) do
-            local macrotext = string.format([[/targetexact %s]], name);
+    -- Loop through names.
+    for name, unitTokens in pairs(names) do
+        local macrotext = string.format([[/targetexact %s]], name);
 
-            local function FindUnitToken()
-                -- Try to find unit quickly.
-                for _, unitToken in pairs(unitTokens) do
-                    if GetUnitName(unitToken, true) == name then
-                        return unitToken;
-                    end;
+        local function FindUnitToken()
+            -- Try to find unit quickly.
+            for _, unitToken in pairs(unitTokens) do
+                if GetUnitName(unitToken, true) == name then
+                    return unitToken;
                 end;
-                -- Try to find unit otherwise.
-                for _, unitToken in pairs(units) do
-                    if GetUnitName(unitToken, true) == name then
-                        return unitToken;
-                    end;
-                end;
-                return nil;
             end;
-
-            table.insert(actions, {
-                name = string.format(L["Target: %s"], name),
-                icon = function(texture)
-                    local unitToken = FindUnitToken();
-                    if unitToken then
-                        SetPortraitTexture(texture, unitToken, true);
-                    else
-                        texture:SetTexture(134400);
-                    end;
-                end,
-                tooltip = function()
-                    local unitToken = FindUnitToken();
-                    if unitToken then
-                        GameTooltip:SetUnit(unitToken);
-                    end;
-                end,
-                pickup = function()
-                    local index = GetMacroIndexByName(macrotext);
-                    if index == 0 then
-                        index = CreateMacro(macrotext, 136243, macrotext);
-                    end;
-                    PickupMacro(index);
-                end,
-                action = {
-                    type = "macro",
-                    macrotext = macrotext,
-                }
-            });
+            -- Try to find unit otherwise.
+            for _, unitToken in pairs(units) do
+                if GetUnitName(unitToken, true) == name then
+                    return unitToken;
+                end;
+            end;
+            return nil;
         end;
 
-        return actions;
-    end,
-});
+        coroutine.yield({
+            name = string.format(L["Target: %s"], name),
+            icon = function(texture)
+                local unitToken = FindUnitToken();
+                if unitToken then
+                    SetPortraitTexture(texture, unitToken, true);
+                else
+                    texture:SetTexture(134400);
+                end;
+            end,
+            tooltip = function()
+                local unitToken = FindUnitToken();
+                if unitToken then
+                    GameTooltip:SetUnit(unitToken);
+                end;
+            end,
+            pickup = function()
+                local index = GetMacroIndexByName(macrotext);
+                if index == 0 then
+                    index = CreateMacro(macrotext, 136243, macrotext);
+                end;
+                PickupMacro(index);
+            end,
+            action = {
+                type = "macro",
+                macrotext = macrotext,
+            }
+        });
+    end;
+
+    self.RegisterEvent("NAME_PLATE_CREATED");
+    self.RegisterEvent("NAME_PLATE_UNIT_ADDED");
+    self.RegisterEvent("NAME_PLATE_UNIT_REMOVED");
+    self.RegisterEvent("PLAYER_FOCUS_CHANGED");
+    self.RegisterEvent("PLAYER_FOCUS_CHANGED");
+    self.RegisterEvent("PLAYER_SOFT_ENEMY_CHANGED");
+    self.RegisterEvent("PLAYER_SOFT_FRIEND_CHANGED");
+    self.RegisterEvent("PLAYER_SOFT_INTERACT_CHANGED");
+    self.RegisterEvent("PLAYER_TARGET_CHANGED");
+    self.RegisterEvent("RAID_ROSTER_UPDATE");
+    self.RegisterEvent("VEHICLE_UPDATE");
+    self.RegisterUnitEvent("UNIT_PET", "player");
+end);

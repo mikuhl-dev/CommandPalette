@@ -1,4 +1,5 @@
-local _, addon = ...;
+---@class CommandPaletteAddon
+local addon = select(2, ...);
 
 local L = addon.L;
 
@@ -7,13 +8,17 @@ function MixinCommandPaletteFrame(self)
 
     ButtonFrameTemplate_HidePortrait(self);
 
-    do -- Make Show/Hide secure.
+    do -- Show
         local _show = self.Show;
+
         function self:Show()
             return not InCombatLockdown() and _show(self);
         end;
+    end;
 
+    do -- Hide
         local _hide = self.Hide;
+
         function self:Hide()
             return not InCombatLockdown() and _hide(self);
         end;
@@ -24,7 +29,7 @@ function MixinCommandPaletteFrame(self)
         searchBox:Disable();
 
         searchBox:HookScript("OnShow", function()
-            CommandPalette.SetSearch("");
+            CommandPalette.ClearSearch();
             -- Hack to ensure certain keybinds do not get inserted into the search box.
             C_Timer.After(0, function()
                 searchBox:Enable();
@@ -92,6 +97,19 @@ function MixinCommandPaletteFrame(self)
 
         hooksecurefunc(CommandPalette, "SetSelected", function(data)
             scrollBox:ScrollToElementData(data);
+        end);
+    end;
+
+    do -- Spinner
+        hooksecurefunc(CommandPalette, "SetLoading", function()
+            local loading = CommandPalette.GetLoading();
+            local spinner = self.Spinner;
+            if loading then
+                spinner:Show();
+                spinner.Text:SetText(loading);
+            else
+                spinner:Hide();
+            end;
         end);
     end;
 

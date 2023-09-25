@@ -1,4 +1,5 @@
-local _, addon = ...;
+---@class CommandPaletteAddon
+local addon = select(2, ...);
 
 local L = addon.L;
 
@@ -46,14 +47,6 @@ BINDING_ICON_TURNRIGHT = 450908;
 BINDING_ICON_VEHICLEAIMDOWN = 450905;
 BINDING_ICON_VEHICLEAIMUP = 450907;
 
-local frame = CreateFrame("Frame");
-
-local actions = nil;
-
-frame:SetScript("OnEvent", function()
-    actions = nil;
-end);
-
 local _addonIcons = nil;
 local function GetAddonIcon(addonName)
     addonName = string.lower(addonName);
@@ -74,66 +67,50 @@ local function GetAddonIcon(addonName)
     return _addonIcons[addonName];
 end;
 
-CommandPalette.RegisterModule(L["Bindings"], {
-    OnEnable = function()
-        frame:RegisterEvent("ADDON_LOADED");
-        actions = nil;
-    end,
+CommandPalette.RegisterModule(L["Bindings"], function(self)
+    local numBindings = GetNumBindings();
+    local headerText = nil;
+    local lastCategoryName = nil;
+    for i = 1, numBindings do
+        local bindingName, categoryName = GetBinding(i);
 
-    OnDisable = function()
-        frame:UnregisterAllEvents();
-        actions = nil;
-    end,
-
-    GetActions = function()
-        if actions ~= nil then return actions; end;
-
-        actions = {};
-
-        local numBindings = GetNumBindings();
-        local headerText = nil;
-        local lastCategoryName = nil;
-        for i = 1, numBindings do
-            local bindingName, categoryName = GetBinding(i);
-
-            local headerName = string.match(bindingName, "^HEADER_(.+)");
-            if headerName ~= nil then
-                if string.match(headerName, "^BLANK") then
-                    headerText = nil;
-                else
-                    headerText = StripHyperlinks(_G["BINDING_HEADER_" .. headerName] or headerName);
-                end;
+        local headerName = string.match(bindingName, "^HEADER_(.+)");
+        if headerName ~= nil then
+            if string.match(headerName, "^BLANK") then
+                headerText = nil;
             else
-                local bindingText = StripHyperlinks(bindingName and _G["BINDING_NAME_" .. bindingName] or bindingName);
-                local categoryText = StripHyperlinks(categoryName and _G[categoryName] or categoryName or OTHER);
+                headerText = StripHyperlinks(_G["BINDING_HEADER_" .. headerName] or headerName);
+            end;
+        else
+            local bindingText = StripHyperlinks(bindingName and _G["BINDING_NAME_" .. bindingName] or bindingName);
+            local categoryText = StripHyperlinks(categoryName and _G[categoryName] or categoryName or OTHER);
 
-                if headerText ~= nil and lastCategoryName ~= categoryName then
-                    headerText = nil;
-                end;
-
-                local name = categoryText .. ": ";
-                if headerText ~= nil and headerText ~= categoryText then
-                    name = name .. headerText .. ": ";
-                end;
-                name = name .. bindingText;
-
-                local addonIcon = GetAddonIcon(headerText or "") or GetAddonIcon(categoryText or "");
-
-                table.insert(actions, {
-                    name = name,
-                    icon = _G["BINDING_ICON_" .. bindingName] or addonIcon,
-                    action = {
-                        type = "binding",
-                        binding = bindingName,
-                        pressAndHoldAction = true,
-                        typerelease = "bindingrelease",
-                    }
-                });
+            if headerText ~= nil and lastCategoryName ~= categoryName then
+                headerText = nil;
             end;
 
-            lastCategoryName = categoryName;
+            local name = categoryText .. ": ";
+            if headerText ~= nil and headerText ~= categoryText then
+                name = name .. headerText .. ": ";
+            end;
+            name = name .. bindingText;
+
+            local addonIcon = GetAddonIcon(headerText or "") or GetAddonIcon(categoryText or "");
+
+            coroutine.yield({
+                name = name,
+                icon = _G["BINDING_ICON_" .. bindingName] or addonIcon,
+                action = {
+                    type = "binding",
+                    binding = bindingName,
+                    pressAndHoldAction = true,
+                    typerelease = "bindingrelease",
+                }
+            });
         end;
 
-        return actions;
-    end,
-});
+        lastCategoryName = categoryName;
+    end;
+
+    self.RegisterEvent("ADDON_LOADED");
+end);

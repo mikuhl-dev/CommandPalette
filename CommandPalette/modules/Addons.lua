@@ -1,34 +1,17 @@
-local _, addon = ...;
+---@class CommandPaletteAddon
+local addon = select(2, ...);
 
 local L = addon.L;
 
-local actions = nil;
-
-CommandPalette.RegisterModule(L["AddOns"], {
-    OnEnable = function()
-        actions = nil;
-    end,
-
-    OnDisable = function()
-        actions = nil;
-    end,
-
-    GetActions = function()
-        if actions ~= nil then return actions; end;
-
-        actions = {};
-
-        for _, addonInfo in pairs(AddonCompartmentFrame.registeredAddons) do
-            table.insert(actions, {
-                name = string.format(L["Open AddOn: %s"], StripHyperlinks(addonInfo.text)),
-                icon = addonInfo.icon,
-                action = {
-                    type = "addon",
-                    _addon = addonInfo.func
-                }
-            });
-        end;
-
-        return actions;
-    end,
-});
+CommandPalette.RegisterModule(L["AddOns"], function()
+    for _, addonInfo in pairs(AddonCompartmentFrame.registeredAddons) do
+        coroutine.yield({
+            name = string.format(L["Open AddOn: %s"], StripHyperlinks(addonInfo.text)),
+            icon = addonInfo.icon,
+            action = {
+                type = "addon",
+                _addon = addonInfo.func
+            }
+        });
+    end;
+end);

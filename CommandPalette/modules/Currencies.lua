@@ -1,14 +1,7 @@
-local _, addon = ...;
+---@class CommandPaletteAddon
+local addon = select(2, ...);
 
 local L = addon.L;
-
-local frame = CreateFrame("Frame");
-
-local actions = nil;
-
-frame:SetScript("OnEvent", function()
-    actions = nil;
-end);
 
 local function EnumerateCurrencies()
     local index = 0;
@@ -43,53 +36,38 @@ local function EnumerateCurrencies()
     end;
 end;
 
-CommandPalette.RegisterModule(L["Currencies"], {
-    OnEnable = function()
-        frame:RegisterEvent("CURRENCY_DISPLAY_UPDATE");
-        actions = nil;
-    end,
-
-    OnDisable = function()
-        frame:UnregisterAllEvents();
-        actions = nil;
-    end,
-
-    GetActions = function()
-        if actions ~= nil then return actions; end;
-
-        actions = {};
-        for index, currencyInfo in EnumerateCurrencies() do
-            local name = currencyInfo.name;
-            local currencyLink = C_CurrencyInfo.GetCurrencyListLink(index);
-            local currencyID = C_CurrencyInfo.GetCurrencyIDFromLink(currencyLink);
-            table.insert(actions, {
-                name = string.format(L["View Currency: %s"], name),
-                icon = currencyInfo.iconFileID,
-                tooltip = GenerateClosure(GameTooltip.SetCurrencyByID, GameTooltip, currencyID),
-                pickup = GenerateClosure(C_CurrencyInfo.PickupCurrency, currencyID),
-                action = {
-                    type = "currency",
-                    _currency = function()
-                        for index, currencyInfo in EnumerateCurrencies() do
-                            if currencyInfo.name == name then
-                                LoadAddOn("Blizzard_TokenUI");
-                                HideUIPanel(CharacterFrame);
-                                ToggleCharacter("TokenFrame", true);
-                                local scrollBox = TokenFrame.ScrollBox;
-                                local elementData = scrollBox:FindElementData(index);
-                                if elementData == nil then return; end;
-                                scrollBox:ScrollToElementData(elementData);
-                                local button = scrollBox:FindFrame(elementData);
-                                if button == nil then return; end;
-                                button:Click();
-                                break;
-                            end;
+CommandPalette.RegisterModule(L["Currencies"], function(self)
+    for index, currencyInfo in EnumerateCurrencies() do
+        local name = currencyInfo.name;
+        local currencyLink = C_CurrencyInfo.GetCurrencyListLink(index);
+        local currencyID = C_CurrencyInfo.GetCurrencyIDFromLink(currencyLink);
+        coroutine.yield({
+            name = string.format(L["View Currency: %s"], name),
+            icon = currencyInfo.iconFileID,
+            tooltip = GenerateClosure(GameTooltip.SetCurrencyByID, GameTooltip, currencyID),
+            pickup = GenerateClosure(C_CurrencyInfo.PickupCurrency, currencyID),
+            action = {
+                type = "currency",
+                _currency = function()
+                    for index, currencyInfo in EnumerateCurrencies() do
+                        if currencyInfo.name == name then
+                            LoadAddOn("Blizzard_TokenUI");
+                            HideUIPanel(CharacterFrame);
+                            ToggleCharacter("TokenFrame", true);
+                            local scrollBox = TokenFrame.ScrollBox;
+                            local elementData = scrollBox:FindElementData(index);
+                            if elementData == nil then return; end;
+                            scrollBox:ScrollToElementData(elementData);
+                            local button = scrollBox:FindFrame(elementData);
+                            if button == nil then return; end;
+                            button:Click();
+                            break;
                         end;
-                    end,
-                }
-            });
-        end;
+                    end;
+                end,
+            }
+        });
+    end;
 
-        return actions;
-    end,
-});
+    self.RegisterEvent("CURRENCY_DISPLAY_UPDATE");
+end);

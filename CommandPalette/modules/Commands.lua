@@ -1,12 +1,7 @@
-local _, addon = ...;
+---@class CommandPaletteAddon
+local addon = select(2, ...);
 
 local L = addon.L;
-
-local actions = nil;
-
-hooksecurefunc("ChatFrame_ImportAllListsToHash", function()
-    actions = nil;
-end);
 
 local function CreateCommandAction(command)
     command = string.lower(command);
@@ -46,30 +41,16 @@ local function GetSecureCommands()
     return _secureCommands;
 end;
 
-CommandPalette.RegisterModule(L["Commands"], {
-    OnEnable = function()
-        actions = nil;
-    end,
+local module = CommandPalette.RegisterModule(L["Commands"], function(self)
+    ChatFrame_ImportAllListsToHash();
 
-    OnDisable = function()
-        actions = nil;
-    end,
+    for command in pairs(hash_SlashCmdList) do
+        coroutine.yield(CreateCommandAction(command));
+    end;
 
-    GetActions = function()
-        if actions ~= nil then return actions; end;
+    for command in pairs(GetSecureCommands()) do
+        coroutine.yield(CreateCommandAction(command));
+    end;
+end);
 
-        ChatFrame_ImportAllListsToHash();
-
-        actions = {};
-
-        for command in pairs(hash_SlashCmdList) do
-            table.insert(actions, CreateCommandAction(command));
-        end;
-
-        for command in pairs(GetSecureCommands()) do
-            table.insert(actions, CreateCommandAction(command));
-        end;
-
-        return actions;
-    end,
-});
+hooksecurefunc("ChatFrame_ImportAllListsToHash", module.ClearActions);

@@ -166,7 +166,7 @@ function MixinCommandPaletteButton(self)
         if name then
             CommandPalette.UpdateActionTimestamp(name);
         end;
-        CommandPalette.Hide();
+        CommandPaletteFrame:Hide();
     end);
 
     self:HookScript("OnHide", function()
