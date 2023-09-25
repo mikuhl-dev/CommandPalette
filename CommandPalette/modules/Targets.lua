@@ -102,10 +102,10 @@ local module = CommandPalette.RegisterModule(L["Targets"], function(self)
         });
     end;
 
+    self.RegisterEvent("GROUP_ROSTER_UPDATE");
     self.RegisterEvent("NAME_PLATE_CREATED");
     self.RegisterEvent("NAME_PLATE_UNIT_ADDED");
     self.RegisterEvent("NAME_PLATE_UNIT_REMOVED");
-    self.RegisterEvent("PLAYER_FOCUS_CHANGED");
     self.RegisterEvent("PLAYER_FOCUS_CHANGED");
     self.RegisterEvent("PLAYER_SOFT_ENEMY_CHANGED");
     self.RegisterEvent("PLAYER_SOFT_FRIEND_CHANGED");
