@@ -104,11 +104,14 @@ function MixinCommandPaletteFrame(self)
         hooksecurefunc(CommandPalette, "SetLoading", function()
             local loading = CommandPalette.GetLoading();
             local spinner = self.Spinner;
+            local scrollBox = self.ScrollBox;
             if loading then
                 spinner:Show();
                 spinner.Text:SetText(loading);
+                scrollBox:Hide();
             else
                 spinner:Hide();
+                scrollBox:Show();
             end;
         end);
     end;

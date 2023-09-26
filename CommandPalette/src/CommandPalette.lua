@@ -85,19 +85,13 @@ do -- Actions
     do
         local _actions = CreateDataProvider();
 
-        do
-            function CommandPalette.SetActions(actions)
-                _actions.collection = actions or {};
-                _actions:TriggerEvent(DataProviderMixin.Event.OnSizeChanged, false);
-            end;
-
-            function CommandPalette.GetActions()
-                return _actions;
-            end;
+        function CommandPalette.SetActions(actions)
+            _actions.collection = actions or {};
+            _actions:TriggerEvent(DataProviderMixin.Event.OnSizeChanged, false);
         end;
 
-        function CommandPalette.ClearActions()
-            return CommandPalette.SetActions(nil);
+        function CommandPalette.GetActions()
+            return _actions;
         end;
     end;
 
@@ -114,7 +108,6 @@ do -- Actions
                         if module.HasActions() then
                             CommandPalette.SetLoading(false);
                         else
-                            CommandPalette.ClearActions();
                             CommandPalette.SetLoading(module.GetName());
                         end;
                         table.insert(_moduleActions, module.GetActions());
