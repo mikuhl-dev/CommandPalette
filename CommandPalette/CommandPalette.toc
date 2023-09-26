@@ -5,7 +5,6 @@
 ## SavedVariablesPerCharacter: CommandPaletteSettings
 ## X-Curse-Project-ID: 903532
 
-localization\Localization.xml
 utils\Utils.xml
 src\CommandPalette.xml
 modules\Modules.xml
