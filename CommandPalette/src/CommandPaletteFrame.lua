@@ -41,7 +41,11 @@ function MixinCommandPaletteFrame(self)
         searchBox:Disable();
 
         searchBox:HookScript("OnShow", function()
-            searchBox:SetText("");
+            CommandPalette.ClearSearch();
+        end);
+
+        hooksecurefunc(CommandPalette, "SetSearch", function(search)
+            searchBox:SetText(search);
         end);
 
         searchBox:HookScript("OnTextChanged", function()

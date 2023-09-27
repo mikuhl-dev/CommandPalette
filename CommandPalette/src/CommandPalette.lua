@@ -10,11 +10,9 @@ CommandPalette = {};
 do -- Search
     do
         local _search = "";
-        local _parts = {};
 
         function CommandPalette.SetSearch(search)
             _search = search;
-
 
             return CommandPalette.UpdateActions();
         end;
