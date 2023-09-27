@@ -12,7 +12,7 @@ local events = {
     "UNIT_PORTRAIT_UPDATE",
 };
 
-CommandPalette.RegisterModule(L["Encounters"], function()
+CommandPalette.RegisterModule(L["Encounters"], function(self)
     -- Temporarily needed to allow us to browse the journal without interference.
     if EncounterJournal ~= nil then
         for _, event in pairs(events) do
@@ -27,8 +27,8 @@ CommandPalette.RegisterModule(L["Encounters"], function()
         local tierInfo = { EJ_GetTierInfo(tierIndex) };
         local tierName = tierInfo[1];
 
-        coroutine.yield({
-            name = string.format(L["View Dungeons: %s"], tierName),
+        self.CreateAction({
+            name = format(L["View Dungeons: %s"], tierName),
             icon = 521753,
             action = {
                 type = "encounter",
@@ -40,8 +40,8 @@ CommandPalette.RegisterModule(L["Encounters"], function()
             }
         });
 
-        coroutine.yield({
-            name = string.format(L["View Raids: %s"], tierName),
+        self.CreateAction({
+            name = format(L["View Raids: %s"], tierName),
             icon = 521753,
             action = {
                 type = "encounter",
@@ -73,8 +73,8 @@ CommandPalette.RegisterModule(L["Encounters"], function()
 
                     local instanceImage = instanceInfo[7];
 
-                    coroutine.yield({
-                        name = string.format(isRaid and L["View Raid: %s"] or L["View Dungeon: %s"], instanceName),
+                    self.CreateAction({
+                        name = format(isRaid and L["View Raid: %s"] or L["View Dungeon: %s"], instanceName),
                         icon = instanceImage,
                         action = {
                             type = "encounter",
@@ -110,8 +110,8 @@ CommandPalette.RegisterModule(L["Encounters"], function()
                                     local creatureInfo = { EJ_GetCreatureInfo(1, encounterID) };
                                     local displayInfo = creatureInfo[4];
 
-                                    coroutine.yield({
-                                        name = string.format(L["View Encounter: %s"], encounterName),
+                                    self.CreateAction({
+                                        name = format(L["View Encounter: %s"], encounterName),
                                         icon = function(texture)
                                             SetPortraitTextureFromCreatureDisplayID(texture, displayInfo);
                                         end,

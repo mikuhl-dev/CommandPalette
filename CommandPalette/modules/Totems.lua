@@ -9,8 +9,8 @@ CommandPalette.RegisterModule(L["Totems"], function(self)
         local name = totemInfo[2];
         local icon = totemInfo[5];
         if name ~= nil and GetTotemTimeLeft(totemIndex) > 0 then
-            coroutine.yield({
-                name = string.format(L["Destroy Totem: %s"], name),
+            self.CreateAction({
+                name = format(L["Destroy Totem: %s"], name),
                 icon = icon,
                 action = {
                     type = "destroytotem",

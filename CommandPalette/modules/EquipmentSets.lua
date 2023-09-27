@@ -8,8 +8,8 @@ CommandPalette.RegisterModule(L["Equipment Sets"], function(self)
         local equipmentSetInfo = { C_EquipmentSet.GetEquipmentSetInfo(equipmentSetID) };
         local name = equipmentSetInfo[1];
         local iconFileID = equipmentSetInfo[2];
-        coroutine.yield({
-            name = string.format(L["Equip Equipment Set: %s"], name),
+        self.CreateAction({
+            name = format(L["Equip Equipment Set: %s"], name),
             icon = iconFileID,
             tooltip = GenerateClosure(GameTooltip.SetEquipmentSet, GameTooltip, equipmentSetID),
             pickup = GenerateClosure(C_EquipmentSet.PickupEquipmentSet, equipmentSetID),

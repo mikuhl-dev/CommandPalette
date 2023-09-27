@@ -3,12 +3,12 @@ local addon = select(2, ...);
 
 local L = addon.L;
 
-local module = CommandPalette.RegisterModule(L["Emotes"], function()
+local module = CommandPalette.RegisterModule(L["Emotes"], function(self)
     ChatFrame_ImportEmoteTokensToHash();
 
     for command in pairs(hash_EmoteTokenList) do
-        coroutine.yield({
-            name = string.format(L["Use Emote: %s"], string.lower(command)),
+        self.CreateAction({
+            name = format(L["Use Emote: %s"], strlower(command)),
             pickup = function()
                 local index = GetMacroIndexByName(command);
                 if index == 0 then

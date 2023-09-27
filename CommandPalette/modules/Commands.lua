@@ -3,10 +3,12 @@ local addon = select(2, ...);
 
 local L = addon.L;
 
+---@param command string
+---@return CommandPaletteAction
 local function CreateCommandAction(command)
-    command = string.lower(command);
+    command = strlower(command);
     return {
-        name = string.format(L["Use Command: %s"], command),
+        name = format(L["Use Command: %s"], command),
         pickup = function()
             local index = GetMacroIndexByName(command);
             if index == 0 then
@@ -26,13 +28,13 @@ local function GetSecureCommands()
     if _secureCommands ~= nil then return _secureCommands; end;
     _secureCommands = {};
     for name, value in pairs(_G) do
-        -- perf: string.byte faster than string.sub
-        if string.byte(name) == 83 and      -- S
-            string.byte(name, 2) == 76 and  -- L
-            string.byte(name, 3) == 65 and  -- A
-            string.byte(name, 4) == 83 and  -- S
-            string.byte(name, 5) == 72 and  -- H
-            string.byte(name, 6) == 95 then -- _
+        -- perf: strbyte faster than strsub
+        if strbyte(name) == 83 and      -- S
+            strbyte(name, 2) == 76 and  -- L
+            strbyte(name, 3) == 65 and  -- A
+            strbyte(name, 4) == 83 and  -- S
+            strbyte(name, 5) == 72 and  -- H
+            strbyte(name, 6) == 95 then -- _
             if IsSecureCmd(value) then
                 _secureCommands[value] = true;
             end;
@@ -45,11 +47,11 @@ local module = CommandPalette.RegisterModule(L["Commands"], function(self)
     ChatFrame_ImportAllListsToHash();
 
     for command in pairs(hash_SlashCmdList) do
-        coroutine.yield(CreateCommandAction(command));
+        self.CreateAction(CreateCommandAction(command));
     end;
 
     for command in pairs(GetSecureCommands()) do
-        coroutine.yield(CreateCommandAction(command));
+        self.CreateAction(CreateCommandAction(command));
     end;
 end);
 

@@ -4,5 +4,6 @@
     <Include file="Localization.lua" />
 
     <Include file="Async.lua" />
+    <Include file="Search.lua" />
 
 </Ui>

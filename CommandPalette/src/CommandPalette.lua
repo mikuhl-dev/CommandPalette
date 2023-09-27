@@ -3,6 +3,7 @@ local addon = select(2, ...);
 
 local L = addon.L;
 local Async = addon.Async;
+local Search = addon.Search;
 
 CommandPalette = {};
 
@@ -32,10 +33,10 @@ do -- Loading
     ---@type string?
     local _loading = nil;
 
-    ---@param loading string | false
+    ---@param loading string|false
     function CommandPalette.SetLoading(loading)
         if loading then
-            _loading = string.format(L["Loading %s..."], loading);
+            _loading = format(L["Loading %s..."], loading);
         else
             _loading = nil;
         end;
@@ -99,69 +100,41 @@ do -- Actions
         local _task = nil;
 
         function CommandPalette.UpdateActions()
-            if _task ~= nil then return; end;
-            _task = Async.Execute(function()
-                -- Gather actions from all modules.
-                local _moduleActions = {};
+            _task = _task or Async.Execute(function()
+                CommandPalette.SetLoading(L["Command Palette"]);
+
+                local search = Search.CreateSearch(CommandPalette.GetSearch());
+                local actions = {};
+                local index = 1;
                 for module in CommandPalette.EnumerateModules() do
                     if module.IsEnabled() then
-                        if module.HasActions() then
-                            CommandPalette.SetLoading(false);
-                        else
-                            CommandPalette.SetLoading(module.GetName());
-                        end;
-                        table.insert(_moduleActions, module.GetActions());
-                    end;
-                end;
-
-                -- Split the search text into parts.
-                local parts = {};
-                for part in string.gmatch(string.lower(CommandPalette.GetSearch()), "%S+") do
-                    table.insert(parts, part);
-                end;
-
-                -- Create a function that checks if all parts match the value.
-                local function matches(value)
-                    value = strlower(value);
-                    for _, part in ipairs(parts or {}) do
-                        if not strfind(value, part, 1, true) then
-                            return false;
-                        end;
-                    end;
-                    return true;
-                end;
-
-                -- Gather all actions that match the search text.
-                local _actions = {};
-                do
-                    local timestamps = CommandPalette.GetActionTimestamps();
-                    for _, actions in ipairs(_moduleActions) do
-                        for _, action in ipairs(actions) do
-                            if matches(action.name) then
-                                -- perf: cache timestamp for sort
-                                action.timestamp = timestamps[action.name] or 0;
-                                table.insert(_actions, action);
+                        CommandPalette.SetLoading(module.GetName());
+                        for action in module.EnumerateActions() do
+                            if search.Matches(action.name) then
+                                actions[index] = action;
+                                index = index + 1;
                             end;
                         end;
                     end;
                 end;
 
-                -- Hide loading spinner.
+                CommandPalette.SetLoading(L["Command Palette"]);
+
+                do
+                    local timestamps = CommandPalette.GetActionTimestamps();
+                    sort(actions, function(a, b)
+                        local aTimestamp = timestamps[a.name] or 0;
+                        local bTimestamp = timestamps[b.name] or 0;
+                        if aTimestamp == bTimestamp then
+                            return b.name > a.name;
+                        end;
+                        return aTimestamp > bTimestamp;
+                    end);
+                end;
+
+                CommandPalette.SetActions(actions);
+                CommandPalette.SetSelected(#actions > 0 and actions[1] or nil);
                 CommandPalette.SetLoading(false);
-
-                -- Sort actions based on when they were last used, otherwise, sort by name.
-                table.sort(_actions, function(a, b)
-                    if a.timestamp == b.timestamp then
-                        return b.name > a.name;
-                    end;
-                    return a.timestamp > b.timestamp;
-                end);
-
-                -- Update the DataProvider.
-                CommandPalette.SetActions(_actions);
-
-                -- Reset the selection.
-                CommandPalette.SetSelected(#_actions > 0 and _actions[1] or nil);
 
                 _task = nil;
             end);

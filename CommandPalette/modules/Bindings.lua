@@ -49,7 +49,7 @@ BINDING_ICON_VEHICLEAIMUP = 450907;
 
 local _addonIcons = nil;
 local function GetAddonIcon(addonName)
-    addonName = string.lower(addonName);
+    addonName = strlower(addonName);
 
     if _addonIcons ~= nil then
         return _addonIcons[addonName];
@@ -61,7 +61,7 @@ local function GetAddonIcon(addonName)
     for addonIndex = 1, numAddons do
         local name, title = GetAddOnInfo(addonIndex);
         title = StripHyperlinks(title);
-        _addonIcons[string.lower(title)] = C_AddOns.GetAddOnMetadata(name, "IconTexture");
+        _addonIcons[strlower(title)] = C_AddOns.GetAddOnMetadata(name, "IconTexture");
     end;
 
     return _addonIcons[addonName];
@@ -74,9 +74,9 @@ CommandPalette.RegisterModule(L["Bindings"], function(self)
     for i = 1, numBindings do
         local bindingName, categoryName = GetBinding(i);
 
-        local headerName = string.match(bindingName, "^HEADER_(.+)");
+        local headerName = strmatch(bindingName, "^HEADER_(.+)");
         if headerName ~= nil then
-            if string.match(headerName, "^BLANK") then
+            if strmatch(headerName, "^BLANK") then
                 headerText = nil;
             else
                 headerText = StripHyperlinks(_G["BINDING_HEADER_" .. headerName] or headerName);
@@ -97,7 +97,7 @@ CommandPalette.RegisterModule(L["Bindings"], function(self)
 
             local addonIcon = GetAddonIcon(headerText or "") or GetAddonIcon(categoryText or "");
 
-            coroutine.yield({
+            self.CreateAction({
                 name = name,
                 icon = _G["BINDING_ICON_" .. bindingName] or addonIcon,
                 action = {

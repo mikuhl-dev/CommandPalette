@@ -1,6 +1,14 @@
 ---@class CommandPaletteAddon
 local addon = select(2, ...);
 
+---@class CommandPaletteAction
+---@field name string
+---@field icon? string|number|fun(texture: Texture)
+---@field quality? Enum.ItemQuality
+---@field tooltip? fun(tooltip: GameTooltip)
+---@field pickup? function
+---@field action table<string, any>
+
 do -- Modules
     ---@type table<CommandPaletteModule, true?>
     local _modules = {};
@@ -16,32 +24,36 @@ do -- Modules
         end;
 
         do -- Actions
+            ---@type table<CommandPaletteAction, true>?
             local _actions = nil;
-
-            function self.ClearActions()
-                _actions = nil;
-            end;
 
             function self.HasActions()
                 return _actions ~= nil;
             end;
 
-            function self.GetActions()
+            function self.EnumerateActions()
                 if _actions == nil then
-                    self:UnregisterAllEvents();
-                    local resume = coroutine.wrap(_updateFn);
+                    self.UnregisterAllEvents();
+
                     local actions = {};
-                    while true do
-                        local action = resume(self);
-                        if action == nil then
-                            break;
-                        end;
-                        table.insert(actions, action);
+
+                    ---@param action CommandPaletteAction
+                    function self.CreateAction(action)
+                        actions[action] = true;
                         coroutine.yield();
                     end;
+
+                    _updateFn(self);
+
+                    self.CreateAction = nil;
+
                     _actions = actions;
                 end;
-                return _actions;
+                return pairs(_actions);
+            end;
+
+            function self.ClearActions()
+                _actions = nil;
             end;
         end;
 

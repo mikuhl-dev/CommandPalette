@@ -9,8 +9,8 @@ CommandPalette.RegisterModule(L["Pet Actions"], function(self)
         local name = petActionInfo[1];
         local texture = petActionInfo[2];
         if name ~= nil then
-            coroutine.yield({
-                name = string.format(L["Use Pet Action: %s"], _G[name] or name),
+            self.CreateAction({
+                name = format(L["Use Pet Action: %s"], _G[name] or name),
                 icon = _G[texture] or texture,
                 tooltip = GenerateClosure(GameTooltip.SetPetAction, GameTooltip, i),
                 pickup = GenerateClosure(PickupPetAction, i),

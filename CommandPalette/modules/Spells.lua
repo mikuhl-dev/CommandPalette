@@ -15,8 +15,8 @@ CommandPalette.RegisterModule(L["Spells"], function(self)
                 break;
             end;
             if spellID ~= nil and IsSpellKnown(spellID, isPet) and not IsPassiveSpell(i, bookType) then
-                coroutine.yield({
-                    name = string.format(L["Cast Spell: %s"], spellName),
+                self.CreateAction({
+                    name = format(L["Cast Spell: %s"], spellName),
                     icon = GetSpellBookItemTexture(i, bookType),
                     cooldown = GenerateClosure(GetSpellCooldown, spellID),
                     tooltip = GenerateClosure(GameTooltip.SetSpellByID, GameTooltip, spellID),

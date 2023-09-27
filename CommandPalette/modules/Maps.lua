@@ -11,7 +11,9 @@ local mapTypes = {
     [4] = true, -- Dungeon
 };
 
-local function CreateMapActions(mapInfo)
+---@param self CommandPaletteModule
+---@param mapInfo UiMapDetails
+local function CreateMapActions(self, mapInfo)
     local mapID = mapInfo.mapID;
 
     -- This being non-nil is required so the map frame does not error.
@@ -33,7 +35,7 @@ local function CreateMapActions(mapInfo)
         for _, member in pairs(membersInfo or {}) do
             if member.mapID == mapID then
                 if member.name ~= name then
-                    name = string.format("%s (%s)", member.name, name);
+                    name = format("%s (%s)", member.name, name);
                 end;
                 break;
             end;
@@ -41,8 +43,8 @@ local function CreateMapActions(mapInfo)
     end;
 
     -- Add map.
-    coroutine.yield({
-        name = string.format(L["Open Map: %s"], name),
+    self.CreateAction({
+        name = format(L["Open Map: %s"], name),
         icon = 137176,
         action = {
             type = "map",
@@ -56,10 +58,10 @@ local function CreateMapActions(mapInfo)
     -- Add all child maps.
     local childrenInfo = C_Map.GetMapChildrenInfo(mapID);
     for _, childInfo in pairs(childrenInfo or {}) do
-        CreateMapActions(childInfo);
+        CreateMapActions(self, childInfo);
     end;
 end;
 
-CommandPalette.RegisterModule(L["Maps"], function()
-    CreateMapActions(C_Map.GetMapInfo(946));
+CommandPalette.RegisterModule(L["Maps"], function(self)
+    CreateMapActions(self, C_Map.GetMapInfo(946));
 end);

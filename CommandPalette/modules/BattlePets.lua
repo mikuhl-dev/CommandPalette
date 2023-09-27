@@ -15,8 +15,8 @@ CommandPalette.RegisterModule(L["Battle Pets"], function(self)
         local icon = petInfo[9];
 
         if petID ~= nil then
-            coroutine.yield({
-                name = string.format(L["Summon Battle Pet: %s"], customName or speciesName),
+            self.CreateAction({
+                name = format(L["Summon Battle Pet: %s"], customName or speciesName),
                 icon = icon,
                 tooltip = GenerateClosure(GameTooltip.SetCompanionPet, GameTooltip, petID),
                 pickup = GenerateClosure(C_PetJournal.PickupPet, petID),

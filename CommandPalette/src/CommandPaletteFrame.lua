@@ -4,7 +4,13 @@ local addon = select(2, ...);
 local L = addon.L;
 
 function MixinCommandPaletteFrame(self)
+    local searchBox = self.SearchBox;
+    local scrollBox = self.ScrollBox;
+    local scrollBar = self.ScrollBar;
+    local spinner = self.Spinner;
+
     self:SetTitle(L["Command Palette"]);
+
 
     ButtonFrameTemplate_HidePortrait(self);
 
@@ -24,25 +30,22 @@ function MixinCommandPaletteFrame(self)
         end;
     end;
 
+    self:HookScript("OnKeyDown", function(_, key)
+        if key == "ESCAPE" then
+            self:Hide();
+        end;
+        self:SetPropagateKeyboardInput(key == "ESCAPE");
+    end);
+
     do -- Search Box
-        local searchBox = self.SearchBox;
         searchBox:Disable();
 
         searchBox:HookScript("OnShow", function()
-            CommandPalette.ClearSearch();
-            -- Hack to ensure certain keybinds do not get inserted into the search box.
-            C_Timer.After(0, function()
-                searchBox:Enable();
-                searchBox:SetFocus();
-            end);
+            searchBox:SetText("");
         end);
 
-        hooksecurefunc(CommandPalette, "SetSearch", function(search)
-            searchBox:SetText(search);
-        end);
-
-        searchBox:HookScript("OnTextChanged", function(_, userInput)
-            return userInput and CommandPalette.SetSearch(searchBox:GetText());
+        searchBox:HookScript("OnTextChanged", function()
+            CommandPalette.SetSearch(searchBox:GetText());
         end);
 
         searchBox:HookScript("OnEscapePressed", function()
@@ -81,8 +84,6 @@ function MixinCommandPaletteFrame(self)
     end;
 
     do -- Scroll Box
-        local scrollBox = self.ScrollBox;
-        local scrollBar = self.ScrollBar;
         local scrollView = CreateScrollBoxListLinearView(8, 8, 8, 8, 8);
 
         scrollView:SetElementInitializer("CommandPaletteButtonTemplate", function(frame, data)
@@ -103,14 +104,15 @@ function MixinCommandPaletteFrame(self)
     do -- Spinner
         hooksecurefunc(CommandPalette, "SetLoading", function()
             local loading = CommandPalette.GetLoading();
-            local spinner = self.Spinner;
-            local scrollBox = self.ScrollBox;
             if loading then
                 spinner:Show();
                 spinner.Text:SetText(loading);
+                searchBox:Disable();
                 scrollBox:Hide();
             else
                 spinner:Hide();
+                searchBox:Enable();
+                searchBox:SetFocus();
                 scrollBox:Show();
             end;
         end);

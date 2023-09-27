@@ -11,8 +11,8 @@ CommandPalette.RegisterModule(L["Heirlooms"], function(self)
             local itemTexture = heirloomInfo[4];
             -- fixme: for some reason, the game randomly fails to return heirloom info.
             if name ~= nil then
-                coroutine.yield({
-                    name = string.format(L["Create Heirloom: %s"], name),
+                self.CreateAction({
+                    name = format(L["Create Heirloom: %s"], name),
                     icon = itemTexture,
                     quality = C_Item.GetItemQualityByID(itemID),
                     tooltip = GenerateClosure(GameTooltip.SetHeirloomByItemID, GameTooltip, itemID),

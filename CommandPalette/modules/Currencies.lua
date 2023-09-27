@@ -41,8 +41,8 @@ CommandPalette.RegisterModule(L["Currencies"], function(self)
         local name = currencyInfo.name;
         local currencyLink = C_CurrencyInfo.GetCurrencyListLink(index);
         local currencyID = C_CurrencyInfo.GetCurrencyIDFromLink(currencyLink);
-        coroutine.yield({
-            name = string.format(L["View Currency: %s"], name),
+        self.CreateAction({
+            name = format(L["View Currency: %s"], name),
             icon = currencyInfo.iconFileID,
             tooltip = GenerateClosure(GameTooltip.SetCurrencyByID, GameTooltip, currencyID),
             pickup = GenerateClosure(C_CurrencyInfo.PickupCurrency, currencyID),

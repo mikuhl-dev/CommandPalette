@@ -10,8 +10,8 @@ CommandPalette.RegisterModule(L["Armor"], function(self)
             local itemName = C_Item.GetItemNameByID(itemID);
             if itemName ~= nil then
                 if GetItemSpell(itemID) ~= nil then
-                    coroutine.yield({
-                        name = string.format(L["Use Armor: %s"], itemName),
+                    self.CreateAction({
+                        name = format(L["Use Armor: %s"], itemName),
                         icon = C_Item.GetItemIconByID(itemID),
                         quality = C_Item.GetItemQualityByID(itemID),
                         cooldown = GenerateClosure(GetItemCooldown, itemID),

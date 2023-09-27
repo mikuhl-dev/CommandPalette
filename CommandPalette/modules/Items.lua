@@ -13,13 +13,13 @@ CommandPalette.RegisterModule(L["Items"], function(self)
                     local name = nil;
 
                     if IsEquippableItem(itemID) then
-                        name = string.format(L["Equip Item: %s"], itemName);
+                        name = format(L["Equip Item: %s"], itemName);
                     elseif GetItemSpell(itemID) ~= nil then
-                        name = string.format(L["Use Item: %s"], itemName);
+                        name = format(L["Use Item: %s"], itemName);
                     end;
 
                     if name ~= nil then
-                        coroutine.yield({
+                        self.CreateAction({
                             name = name,
                             icon = C_Item.GetItemIconByID(itemID),
                             quality = C_Item.GetItemQualityByID(itemID),

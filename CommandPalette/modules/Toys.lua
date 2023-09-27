@@ -15,8 +15,8 @@ CommandPalette.RegisterModule(L["Toys"], function(self)
             local name = toyInfo[2];
             local icon = toyInfo[3];
             if name ~= nil then
-                coroutine.yield({
-                    name = string.format(L["Use Toy: %s"], name),
+                self.CreateAction({
+                    name = format(L["Use Toy: %s"], name),
                     icon = icon,
                     quality = C_Item.GetItemQualityByID(itemId),
                     cooldown = GenerateClosure(GetItemCooldown, itemId),

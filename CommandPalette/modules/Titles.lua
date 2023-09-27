@@ -8,8 +8,8 @@ CommandPalette.RegisterModule(L["Titles"], function(self)
     for titleID = 0, numTitles do
         if IsTitleKnown(titleID) or titleID == 0 then
             local titleName = GetTitleName(titleID) or PLAYER_TITLE_NONE;
-            coroutine.yield({
-                name = string.format(L["Set Title: %s"], titleName),
+            self.CreateAction({
+                name = format(L["Set Title: %s"], titleName),
                 action = {
                     type = "script",
                     _script = function()

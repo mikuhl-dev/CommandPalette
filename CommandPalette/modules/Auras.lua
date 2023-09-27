@@ -10,8 +10,8 @@ CommandPalette.RegisterModule(L["Auras"], function(self)
         local name = auraData.name;
         local icon = auraData.icon;
         local auraInstanceID = auraData.auraInstanceID;
-        coroutine.yield({
-            name = string.format(L["Cancel Aura: %s"], name),
+        self.CreateAction({
+            name = format(L["Cancel Aura: %s"], name),
             icon = icon,
             tooltip = GenerateClosure(GameTooltip.SetUnitBuffByAuraInstanceID, GameTooltip, "player", auraInstanceID,
                 auraFilter),

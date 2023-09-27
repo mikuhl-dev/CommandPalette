@@ -11,8 +11,8 @@ CommandPalette.RegisterModule(L["Professions"], function(self)
         local icon = professionInfo[2];
         local spellOffset = professionInfo[6];
         local skillLineID = professionInfo[7];
-        coroutine.yield({
-            name = string.format(L["Open Profession: %s"], name),
+        self.CreateAction({
+            name = format(L["Open Profession: %s"], name),
             icon = icon,
             tooltip = GenerateClosure(GameTooltip.SetSpellBookItem, GameTooltip, spellOffset + 1,
                 BOOKTYPE_SPELL),

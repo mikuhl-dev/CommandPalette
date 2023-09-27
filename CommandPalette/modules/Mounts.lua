@@ -12,8 +12,8 @@ CommandPalette.RegisterModule(L["Mounts"], function(self)
         local isUsable = mountInfo[5];
 
         if isUsable then
-            coroutine.yield({
-                name = string.format(L["Summon Mount: %s"], name),
+            self.CreateAction({
+                name = format(L["Summon Mount: %s"], name),
                 icon = icon,
                 tooltip = GenerateClosure(GameTooltip.SetMountBySpellID, GameTooltip, spellID),
                 pickup = GenerateClosure(PickupSpell, spellID),

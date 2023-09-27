@@ -45,7 +45,7 @@ local function EnumerateFactions()
                     isCollapsed = isCollapsed,
                     numChildren = 0,
                 };
-                table.insert(headers, header);
+                tinsert(headers, header);
                 ExpandFactionHeader(index);
             else
                 header.numChildren = header.numChildren + 1;
@@ -65,8 +65,8 @@ CommandPalette.RegisterModule(L["Reputations"], function(self)
         local barValue = factionInfo[6];
         local atWarWith = factionInfo[7];
         local factionID = factionInfo[14];
-        coroutine.yield({
-            name = string.format(L["View Reputation: %s"], name),
+        self.CreateAction({
+            name = format(L["View Reputation: %s"], name),
             icon = 236681,
             tooltip = function()
                 GameTooltip_SetTitle(GameTooltip, name);
