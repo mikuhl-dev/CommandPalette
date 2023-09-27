@@ -12,6 +12,7 @@
     <Include file="Emotes.lua" />
     <Include file="Encounters.lua" />
     <Include file="EquipmentSets.lua" />
+    <Include file="GreatVault.lua" />
     <Include file="Heirlooms.lua" />
     <Include file="Items.lua" />
     <Include file="Macros.lua" />
