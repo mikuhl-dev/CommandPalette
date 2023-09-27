@@ -56,6 +56,18 @@ do -- Settings
             CommandPalette.GetActionTimestamps()[name] = time();
         end;
     end;
+
+    do -- Debug Mode
+        function CommandPalette.IsDebugMode()
+            local settings = _GetSettings();
+            return settings.debugMode or false;
+        end;
+
+        function CommandPalette.SetDebugMode(debugMode)
+            local settings = _GetSettings();
+            settings.debugMode = debugMode;
+        end;
+    end;
 end;
 
 do -- Settings Category
@@ -84,6 +96,18 @@ do -- Settings Category
                 CommandPalette.ClearActionTimestamps, L["Resets the order of actions in the Command Palette."], true);
             Settings.RegisterInitializer(_settingsCategory, initializer);
         end;
+
+        do -- Debug Mode
+            local name = "Debug Mode";
+            local variable = "COMMAND_PALETTE_SETTING_DEBUG_MODE";
+            local setting = Settings.RegisterAddOnSetting(_settingsCategory, name, variable, "boolean", false);
+            setting:SetValue(CommandPalette.IsDebugMode());
+
+            Settings.CreateCheckBox(_settingsCategory, setting, format("Enables Debug Mode", name));
+            Settings.SetOnValueChangedCallback(variable, function(_, _, value)
+                CommandPalette.SetDebugMode(true);
+            end);
+        end;
     end);
 
     do -- Modules Category
@@ -94,7 +118,7 @@ do -- Settings Category
             CommandPalette.ContinueOnAddOnLoaded(function()
                 local name = module.GetName();
 
-                local variable = "COMMAND_PALETTE_MODULE_" .. string.upper(name);
+                local variable = "COMMAND_PALETTE_MODULE_" .. strupper(name);
 
                 local setting = Settings.RegisterAddOnSetting(_modulesCategory, name, variable, "boolean", true);
 
@@ -104,7 +128,7 @@ do -- Settings Category
                 end;
                 setting:SetValue(enabled);
 
-                Settings.CreateCheckBox(_modulesCategory, setting, string.format(L["Enables the %s module."], name));
+                Settings.CreateCheckBox(_modulesCategory, setting, format(L["Enables the %s module."], name));
                 Settings.SetOnValueChangedCallback(variable, function(_, _, value)
                     if value then
                         module:Enable();
