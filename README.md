@@ -38,7 +38,7 @@ Make a [New Issue](https://github.com/MichaelPriebe/CommandPalette/issues) with 
 
 ### Localizers 🌐
 
-See [Localization.esMX.lua](CommandPalette/localization/Localization.esMX.lua) for example.
+See [Localization on CurseForge](https://legacy.curseforge.com/wow/addons/command-palette/localization).
 
 ---
 
