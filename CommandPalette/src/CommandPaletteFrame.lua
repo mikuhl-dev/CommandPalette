@@ -11,6 +11,7 @@ function MixinCommandPaletteFrame(self)
 
     self:SetTitle(L["Command Palette"]);
 
+    tinsert(UISpecialFrames, self:GetName());
 
     ButtonFrameTemplate_HidePortrait(self);
 
@@ -29,13 +30,6 @@ function MixinCommandPaletteFrame(self)
             return not InCombatLockdown() and _hide(self);
         end;
     end;
-
-    self:HookScript("OnKeyDown", function(_, key)
-        if key == "ESCAPE" then
-            self:Hide();
-        end;
-        self:SetPropagateKeyboardInput(key == "ESCAPE");
-    end);
 
     do -- Search Box
         searchBox:Disable();
