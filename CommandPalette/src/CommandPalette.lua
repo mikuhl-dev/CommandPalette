@@ -98,7 +98,7 @@ do -- Actions
         local _task = nil;
 
         function CommandPalette.UpdateActions()
-            _task = _task or Async.Execute(function()
+            _task = _task or Async.CreateTask(function()
                 CommandPalette.SetLoading(L["Command Palette"]);
 
                 local search = Search.CreateSearch(CommandPalette.GetSearch());
