@@ -82,7 +82,7 @@ CommandPalette.RegisterModule(L["Bindings"], function(self)
                 headerText = StripHyperlinks(_G["BINDING_HEADER_" .. headerName] or headerName);
             end;
         else
-            local bindingText = StripHyperlinks(bindingName and _G["BINDING_NAME_" .. bindingName] or bindingName);
+            local bindingText = StripHyperlinks(bindingName and _G["BINDING_NAME_" .. bindingName] or bindingName or "");
             local categoryText = StripHyperlinks(categoryName and _G[categoryName] or categoryName or OTHER);
 
             if headerText ~= nil and lastCategoryName ~= categoryName then
