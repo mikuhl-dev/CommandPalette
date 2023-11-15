@@ -79,11 +79,12 @@ CommandPalette.RegisterModule(L["Bindings"], function(self)
             if strmatch(headerName, "^BLANK") then
                 headerText = nil;
             else
-                headerText = StripHyperlinks(_G["BINDING_HEADER_" .. headerName] or headerName);
+                headerText = StripHyperlinks(tostring(_G["BINDING_HEADER_" .. headerName] or headerName));
             end;
         else
-            local bindingText = StripHyperlinks(bindingName and _G["BINDING_NAME_" .. bindingName] or bindingName or "");
-            local categoryText = StripHyperlinks(categoryName and _G[categoryName] or categoryName or OTHER);
+            local bindingText = StripHyperlinks(tostring(bindingName and _G["BINDING_NAME_" .. bindingName] or
+                bindingName or ""));
+            local categoryText = StripHyperlinks(tostring(categoryName and _G[categoryName] or categoryName or OTHER));
 
             if headerText ~= nil and lastCategoryName ~= categoryName then
                 headerText = nil;
